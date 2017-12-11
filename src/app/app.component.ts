@@ -5,7 +5,18 @@ import 'rxjs/add/operator/map';
 import { FormsModule } from '@angular/forms';
 
 import { Variable } from './variable';
-import CQ from 'coffeequate';
+
+
+import * as nerdamer from 'nerdamer';
+declare let nerdamer: any;
+require('./Solve.js');
+require('./Algebra.js');
+require('./Calculus.js');
+require('./Extra.js');
+
+var x = nerdamer.solve('x-1=-3/2', 'x');
+var tries = x.toString().split(",");
+console.log(tries[0]);
 
 
 // declare var $: any;    //declaring jQuery
@@ -107,8 +118,8 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
     console.log("EQNS: "+ Guppy.instances['equationBox'].backend.get_content('eqns'));
     //console.log("This: " + inputString);
-    let answer = CQ(formatedText).solve(variable);
-    console.log("Answer: " + answer);
+    //let answer = CQ(formatedText).solve(variable);
+    //console.log("Answer: " + answer);
   }
 
   /*this method extracts out the variables from the string input */
