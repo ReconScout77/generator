@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 import { FormsModule } from '@angular/forms';
 
 import { Variable } from './variable';
+import CQ from 'coffeequate';
 
 
 // declare var $: any;    //declaring jQuery
@@ -71,13 +72,21 @@ export class AppComponent implements OnInit, AfterViewChecked {
           let newVar = new Variable(varName);
           this.variables.push(newVar);
         }
+        this.solveEquation();
         console.log(this.variables);
         this.parameterDiv = $('.parameter-condition');
      this.parameterDiv.show();
     }catch (e) {
       alert('Parsing error!' + e);
-      }
     }
+  }
+
+  solveEquation() {
+    let inputString = Guppy.instances['equationBox'].backend.get_content();
+    console.log("This: " + inputString);
+    let answer = CQ("x**2=25").solve("x");
+    console.log("Answer: " + answer);
+  }
 
   /*this method extracts out the variables from the string input */
   extractVariables(input) {
