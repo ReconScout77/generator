@@ -72,7 +72,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
           let newVar = new Variable(varName);
           this.variables.push(newVar);
         }
-        this.solveEquation();
+        this.solveEquation(extractedVars[0]);
         console.log(this.variables);
         this.parameterDiv = $('.parameter-condition');
      this.parameterDiv.show();
@@ -81,10 +81,33 @@ export class AppComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  solveEquation() {
-    let inputString = Guppy.instances['equationBox'].backend.get_content();
-    console.log("This: " + inputString);
-    let answer = CQ("x**2=25").solve("x");
+  toFortran(inputString) {
+    var output = [];
+    for (var i = 0; i < inputString.length; i++) {
+      if (inputString[i] == '^') {
+        output.push('**');
+      }
+      else {
+        output[i] = inputString[i];
+      }
+    }
+
+    return output.join('');
+  }
+
+  solveEquation(variable) {
+    console.log("Latex: "+ Guppy.instances['equationBox'].backend.get_content('latex'));
+
+    var textAnswer = Guppy.instances['equationBox'].backend.get_content('text');
+    console.log("Text: " + textAnswer);
+    var formatedText = this.toFortran(textAnswer);
+    console.log("Fortran Text: " + formatedText);
+
+    console.log("XML: "+ Guppy.instances['equationBox'].backend.get_content('xml'));
+
+    console.log("EQNS: "+ Guppy.instances['equationBox'].backend.get_content('eqns'));
+    //console.log("This: " + inputString);
+    let answer = CQ(formatedText).solve(variable);
     console.log("Answer: " + answer);
   }
 
